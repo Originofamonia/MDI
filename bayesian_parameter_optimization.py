@@ -43,8 +43,8 @@ def run_trial(data, nnet_params, hyperparameter_space, train_function):
     """
     # We will be modifying params, so make a copy of it
     hyperparameter_space = dict(hyperparameter_space)
-    print ',\n'.join(['\t{} : {}'.format(k, v)
-                      for k, v in hyperparameter_space.items()])
+    print(',\n'.join(['\t{} : {}'.format(k, v)
+                      for k, v in hyperparameter_space.items()]))
 
     # data is standardized during preprocessing step
     # Get training set statistics for standardization
@@ -90,25 +90,25 @@ def run_trial(data, nnet_params, hyperparameter_space, train_function):
                 best_objective = epoch['validate_objective']
                 best_epoch = epoch
                 best_model = lasagne.layers.get_all_param_values(layers)
-            print "{}: {}, ".format(epoch['iteration'],
+            print("{}: {}, ".format(epoch['iteration'],
                                     epoch['validate_objective']),
-            sys.stdout.flush()
+            sys.stdout.flush())
     # If there was an error while training, report it to whetlab
     except Exception:
-        print "ERROR: "
-        print traceback.format_exc()
+        print("ERROR: ")
+        print(traceback.format_exc())
         return np.nan, {}, {}
-    print
+    # print
     # Check that all training costs were not NaN; return NaN if any were.
     success = np.all([np.isfinite(e['train_cost']) for e in epochs])
     if np.isinf(best_objective) or len(epochs) == 0 or not success:
-        print '    Failed to converge.'
-        print
+        print('    Failed to converge.')
+        # print
         return np.nan, {}, {}
     else:
         for k, v in best_epoch.items():
-            print "\t{:>35} | {}".format(k, v)
-        print
+            print("\t{:>35} | {}".format(k, v))
+        print()
         return best_objective, best_epoch, best_model
 
 

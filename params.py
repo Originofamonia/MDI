@@ -5,9 +5,8 @@ import numpy as np
 from scipy.stats import mode
 import lasagne
 
-
 # random number seed
-rand_num_seed = 1
+rand_num_seed = 9527
 
 # imputation parameters
 
@@ -17,15 +16,18 @@ adult_params = {
     'cat_cols': (1, 3, 4, 5, 6, 7, 8, 12),
     'non_cat_cols': (0, 2, 9, 10, 11),
     'mnar_values': ('Without-pay', 'Never-worked',
-      '1st-4th', '10th','5th-6th',"9th, 7th-8th", "11th","12th",'Preschool',
-      'Divorced', 'Never-married', 'Separated', 'Widowed',
-      'Handlers-cleaners', 'Machine-op-inspct', 'Farming-fishing', 'Priv-house-ser',
-      'Not-in-family', 'Other-relative', 'Unmarried',
-      'Amer-Indian-Eskimo', 'Other', 'Black',
-      'Male',
-      'Cambodia', 'Puerto-Rico', 'Outlying-US(Guam-USVI-etc)', 'India', 'China', 'Cuba', 'Iran', 'Honduras', 'Philippines', 'Jamaica', 'Vietnam', 'Mexico', 'Dominican-Republic', 'Laos', 'Ecuador', 'Taiwan', 'Haiti', 'Columbia',"Guatemala", "Nicaragua", "Scotland", "Thailand", "El-Salvador", "Trinadad&Tobago", "Peru", "Hong"),
-    'imp_methods':('RandomReplace', 'Summary', 'RandomForest', 'LogisticRegression', 'SVD',
-               'SVM', 'KNN','Identity'),
+                    '1st-4th', '10th', '5th-6th', "9th, 7th-8th", "11th", "12th", 'Preschool',
+                    'Divorced', 'Never-married', 'Separated', 'Widowed',
+                    'Handlers-cleaners', 'Machine-op-inspct', 'Farming-fishing', 'Priv-house-ser',
+                    'Not-in-family', 'Other-relative', 'Unmarried',
+                    'Amer-Indian-Eskimo', 'Other', 'Black',
+                    'Male',
+                    'Cambodia', 'Puerto-Rico', 'Outlying-US(Guam-USVI-etc)', 'India', 'China', 'Cuba', 'Iran',
+                    'Honduras', 'Philippines', 'Jamaica', 'Vietnam', 'Mexico', 'Dominican-Republic', 'Laos', 'Ecuador',
+                    'Taiwan', 'Haiti', 'Columbia', "Guatemala", "Nicaragua", "Scotland", "Thailand", "El-Salvador",
+                    "Trinadad&Tobago", "Peru", "Hong"),
+    'imp_methods': ('RandomReplace', 'Summary', 'RandomForest', 'LogisticRegression', 'SVD',
+                    'SVM', 'KNN', 'Identity'),
     'n_neighbors': 5,
     'knn_summary_func': np.mean,
     'summary_func': lambda x: mode(x)[0],
@@ -34,11 +36,11 @@ adult_params = {
 votes_params = {
     'miss_data_symbol': '?',
     'miss_data_cond': lambda x: x == '?',
-    'cat_cols': np.arange(0, 16), # labels are not included in imputation
+    'cat_cols': np.arange(0, 16),  # labels are not included in imputation
     'non_cat_cols': (),
-    'mnar_values': ('n'),
-    'imp_methods':('RandomReplace', 'Summary', 'RandomForest', 'LogisticRegression', 'SVD', #no KNN
-               'SVM', 'Identity'), 
+    'mnar_values': 'n',
+    'imp_methods': ('RandomReplace', 'Summary', 'RandomForest', 'LogisticRegression', 'SVD',  # no KNN
+                    'SVM', 'Identity'),
     'summary_func': lambda x: mode(x)[0]
 }
 
@@ -79,4 +81,4 @@ hyperparameter_space = {
     'dropout': {'type': 'int', 'min': 0, 'max': 1},
     'learning_rate': {'type': 'float', 'min': .000001, 'max': .01},
     'network': {'type': 'enum', 'options': ['general_network']}
-    }
+}

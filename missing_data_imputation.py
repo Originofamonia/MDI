@@ -48,7 +48,7 @@ class Imputer(object):
         else:
             data = np.copy(x)
 
-        for col in xrange(x.shape[1]):
+        for col in range(x.shape[1]):
             nan_ids = missing_data_cond(x[:, col])
             val_ids = np.random.choice(np.where(~nan_ids)[0],  np.sum(nan_ids))
             data[nan_ids, col] = data[val_ids, col]
@@ -77,7 +77,7 @@ class Imputer(object):
             data = np.copy(x)
 
         # replace missing values with the summarization function
-        for col in xrange(x.shape[1]):
+        for col in range(x.shape[1]):
             nan_ids = missing_data_cond(x[:, col])
             if True in nan_ids:
                 val = summary_func(x[~nan_ids, col])
@@ -163,7 +163,7 @@ class Imputer(object):
         col = 0
         cat_ids_comp = []
         while col < max(cat_cols):
-            if isinstance(data_complete[0, col], basestring) \
+            if isinstance(data_complete[0, col], str) \
                     and not data_complete[0, col].isdigit():
                 cat_ids_comp.append(col)
             col += 1
@@ -176,27 +176,30 @@ class Imputer(object):
         data_complete = scaler.transform(data_complete)
         # create dict with missing rows and respective columns
         missing = defaultdict(list)
-        map(lambda (x, y): missing[x].append(y),
-            np.argwhere(missing_data_cond(data)))
+        # The below map function doesn't work, can't fill missing dict.
+        # map(lambda x, y: missing[x].append(y),
+        #     np.argwhere(missing_data_cond(data)))
+        for row in np.argwhere(missing_data_cond(data)):
+            missing[row[0]].append(row[1])
         # create mask to build NearestNeighbors with complete observations only
         mask = np.ones(len(data_complete), bool)
-        mask[missing.keys()] = False
+        mask[list(missing.keys())] = False
         # fit nearest neighbors and get knn ids of missing observations
-        print 'Computing k-nearest neighbors'
+        print('Computing k-nearest neighbors')
         nbrs = NearestNeighbors(n_neighbors=k, metric='euclidean').fit(
             data_complete[mask])
-        ids = nbrs.kneighbors(data_complete[missing.keys()],
+        ids = nbrs.kneighbors(data_complete[list(missing.keys())],
                               return_distance=False)
 
         def substituteValues(i):
             row = missing.keys()[i]
             cols = missing[row]
-            #data[row, cols] = mode(data[mask][ids[i]][:, cols])[0].flatten()
+            # data[row, cols] = mode(data[mask][ids[i]][:, cols])[0].flatten()
             nn_missing_dat=data[mask][ids[i]][:, cols]
             for missing_col in range(nn_missing_dat.shape[1]):
-                data[row, cols[missing_col]]=mode(nn_missing_dat[:,missing_col])[0][0]
-        print 'Substituting missing values'
-        map(substituteValues, xrange(len(missing)))
+                data[row, cols[missing_col]] = mode(nn_missing_dat[:, missing_col])[0][0]
+        print('Substituting missing values')
+        map(substituteValues, range(len(missing)))
         return data
 
     def predict(self, x, cat_cols, missing_data_cond, clf, inc_miss=True,
@@ -228,7 +231,7 @@ class Imputer(object):
         if inc_miss:
             valid_cols = np.arange(data.shape[1])
         else:
-            valid_cols = [n for n in xrange(data.shape[1])
+            valid_cols = [n for n in range(data.shape[1])
                           if n not in miss_cols_uniq]
 
         # factorize valid cols
@@ -248,7 +251,7 @@ class Imputer(object):
         # update each column with missing features
         for miss_col in miss_cols_uniq:
             # extract valid observations given current column missing data
-            valid_obs = [n for n in xrange(len(data))
+            valid_obs = [n for n in range(len(data))
                          if data[n, miss_col] != '?']
 
             # prepare independent and dependent variables, valid obs only
@@ -407,6 +410,6 @@ class Imputer(object):
                     (data, -one_minus_one * np.ones((len(data), 1), dtype=int)))
 
         # remove columns with categorical variables
-        val_cols = [n for n in xrange(data.shape[1]) if n not in cols]
+        val_cols = [n for n in range(data.shape[1]) if n not in cols]
         data = data[:, val_cols]
         return data

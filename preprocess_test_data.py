@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import numpy as np
-import cPickle as pickle
+import _pickle as pickle
 import os
 import random
 from scipy import delete
@@ -36,7 +36,7 @@ x = delete(x, (4, 14), 1)
 # instantiate Imputer
 imp = Imputer()
 for imp_method in adult_params['imp_methods']:
-    print 'Imputing with {}'.format(imp_method)
+    print('Imputing with {}'.format(imp_method))
     data = impute(x, imp, imp_method, adult_params)
 
     # load respective scaler
@@ -45,7 +45,7 @@ for imp_method in adult_params['imp_methods']:
 
     scaler_dict = pickle.load(open(scaler_path, "rb"))
     for name, scaler in scaler_dict.items():
-        print 'Scaling with {}'.format(name)
+        print('Scaling with {}'.format(name))
         # scale and binarize, adding one col for missing value in all categ vars
         data_scaled = np.copy(data)
         data_scaled[:, adult_params['non_cat_cols']] = scaler.transform(
@@ -60,7 +60,7 @@ for imp_method in adult_params['imp_methods']:
         path = os.path.join(feats_test_folder,
                             '{}_bin_scaled_test.np'.format(name))
         data_scaled_bin = np.hstack((data_scaled_bin, labels))
-        print "\tSaving imputed data to {}".format(path)
+        print("\tSaving imputed data to {}".format(path))
         data_scaled_bin.dump(path)
     del data
     del data_scaled

@@ -17,6 +17,7 @@ def set_trace():
     import sys
     Pdb(color_scheme='Linux').set_trace(sys._getframe().f_back)
 
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -36,15 +37,14 @@ if __name__ == '__main__':
     print("\nExecuting bayesian parameter optimization\n{}").format(model_name)
 
     # Load training and validation sets and convert them to float32
-    data = np.load(
-        os.path.join(feats_train_folder, filepaths[args.dataset_index, 1]))
+    data = np.load(os.path.join(feats_train_folder, filepaths[args.dataset_index, 1]))
     data = data.astype(np.float32)
 
     # Run parameter optimization FOREVER
     bpo.parameter_search(data,
                          nnet_params,
                          hyperparameter_space,
-                         os.path.join(TRIAL_DIRECTORY+"_"+args.dataset, model_name),
+                         os.path.join(TRIAL_DIRECTORY + "_" + args.dataset, model_name),
                          MODEL_DIRECTORY,
                          neural_networks.train,
                          model_name)

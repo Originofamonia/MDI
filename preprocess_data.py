@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import numpy as np
-import cPickle as pkl
+import _pickle as pkl
 import os
 import random
 from scipy import delete
@@ -37,26 +37,26 @@ monotone = True
 ratios = np.arange(0, .5, .1)
 
 for ratio in ratios:
-    print '\nPerturbing {}% of data'.format(ratio)
+    print('\nPerturbing {}% of data'.format(ratio))
     if ratio > 0:
         pert_data, _ = perturb_data(x, adult_params['cat_cols'], ratio, monotone,
                                        adult_params['miss_data_symbol'],
                                        adult_params['mnar_values'])
     else:
         pert_data = x
-    print "\tRatio is {} of {}".format(
+    print("\tRatio is {} of {}".format(
             np.sum(pert_data == adult_params['miss_data_symbol']),
-            len(pert_data) * len(adult_params['cat_cols']))
+            len(pert_data) * len(adult_params['cat_cols'])))
 
     path = os.path.join(perturb_folder,
                         'adult_train_pert_mono_{}_ratio_{}.csv'.format(monotone,
                                                                        ratio))
     # save perturbed data to disk as csv
-    print '\tSaving perturbed data to {}'.format(path)
+    print('\tSaving perturbed data to {}'.format(path))
     np.savetxt(path, pert_data, delimiter=",", fmt="%s")
 
     for imp_method in adult_params['imp_methods']:
-        print '\tImputing with {}'.format(imp_method)
+        print('\tImputing with {}'.format(imp_method))
         imp = Imputer()
         data = impute(pert_data, imp, imp_method, adult_params)
 
@@ -64,7 +64,7 @@ for ratio in ratios:
                                                              monotone,
                                                              ratio)
         # save data as csv
-        print '\tSaving imputed data to {}'.format(path)
+        print('\tSaving imputed data to {}'.format(path))
         np.savetxt(path, data, delimiter=",", fmt="%s")
 
         # scale continuous variables and convert categorial to one-hot
@@ -104,5 +104,5 @@ for ratio in ratios:
                                                               monotone,
                                                               ratio)
         path = os.path.join(feats_train_folder, filename)
-        print '\tSaving imputed scaled and binarized data to {}'.format(path)
+        print('\tSaving imputed scaled and binarized data to {}'.format(path))
         data_scaled_bin.dump(path)

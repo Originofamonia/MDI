@@ -5,13 +5,12 @@ predictions using the datasets in the given include file"""
 
 import os
 import argparse
-import cPickle as pkl
+import _pickle as pkl
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import DecisionTreeClassifier
 from params import feats_train_folder, feats_test_folder
 from params import RESULTS_PATH
-
 
 dataname = 'votes'
 
@@ -20,18 +19,19 @@ def dumpclean(obj):
     if type(obj) == dict:
         for k, v in obj.items():
             if hasattr(v, '__iter__'):
-                print k
+                print(k)
                 dumpclean(v)
             else:
-                print '%s : %s' % (k, v)
+                print('%s : %s' % (k, v))
     elif type(obj) == list:
         for v in obj:
             if hasattr(v, '__iter__'):
                 dumpclean(v)
             else:
-                print v
+                print(v)
     else:
-        print obj
+        print(obj)
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -103,7 +103,7 @@ if __name__ == '__main__':
                 obj_val = (sum(y_test_hat != test_data[:, -1]) /
                            float(len(test_data)))
 
-                model_preds[model_name+imputation_name] = obj_val
+                model_preds[model_name + imputation_name] = obj_val
                 print("{} on {} error rate on test set: {}").format(
                     model_name, imputation_name, obj_val)
 

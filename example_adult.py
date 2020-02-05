@@ -26,25 +26,25 @@ n_neighbors = 5
 # data_drop = imp.drop(x, missing_data_cond)
 
 # replace missing values with random existing values
-print 'imputing with random replacement'
+print('imputing with random replacement')
 data_replace = imp.replace(x, missing_data_cond)
 
 # replace missing values with feature summary
-print 'imputing with feature summarization (mode)'
+print('imputing with feature summarization (mode)')
 summ_func = lambda x: mode(x)[0]
 data_mode = imp.summarize(x, summ_func, missing_data_cond)
 
 # replace categorical features with one hot row
-print 'imputing with one-hot'
+print('imputing with one-hot')
 data_onehot = imp.binarize_data(x, cat_cols)
 
 # replace missing data with predictions using random forest
-print 'imputing with predicted values from random forest'
+print('imputing with predicted values from random forest')
 clf = RandomForestClassifier(n_estimators=100, criterion='gini')
 data_rf = imp.predict(x, cat_cols, missing_data_cond, clf)
 
 # replace missing data with predictions using SVM
-print 'imputing with predicted values usng SVM'
+print('imputing with predicted values usng SVM')
 clf = SVM(
     penalty='l2', loss='squared_hinge', dual=True, tol=0.0001, C=1.0, multi_class='ovr', 
     fit_intercept=True, intercept_scaling=1, class_weight=None, verbose=0, 
@@ -52,19 +52,20 @@ clf = SVM(
 data_svm = imp.predict(x, cat_cols, missing_data_cond, clf)
 
 # replace missing data with predictions using logistic regression
-print 'imputing with predicted values usng logistic regression'
+print('imputing with predicted values usng logistic regression')
 clf = LogisticRegression(
             penalty='l2', dual=False, tol=0.0001, C=1.0, fit_intercept=True,
             intercept_scaling=1)
 data_logistic = imp.predict(x, cat_cols, missing_data_cond, clf)
 
 # replace missing data with values obtained after factor analysis
-print 'imputing with factor analysis'
+print('imputing with factor analysis')
 data_facanal = imp.factor_analysis(x, cat_cols, missing_data_cond)
 
 # replace missing data with knn
-print 'imputing with K-Nearest Neighbors'
+print('imputing with K-Nearest Neighbors')
 data_knn = imp.knn(x, n_neighbors, np.mean, missing_data_cond, cat_cols)
+
 
 def compute_histogram(data, labels):
     histogram = itemfreq(sorted(data))
@@ -75,24 +76,23 @@ def compute_histogram(data, labels):
     histogram = histogram[histogram[:,0].argsort()]
     return histogram
 
+
 # compute histograms
-labels = np.unique(x[:,1])
-freq_data = {}
-freq_data['Raw data'] = compute_histogram(x[:,1], labels)
+labels = np.unique(x[:, 1])
+freq_data = {'Raw data': compute_histogram(x[:, 1], labels),
+             'Random replace': compute_histogram(data_replace[:, 1], labels),
+             'Summary': compute_histogram(data_mode[:, 1], labels),
+             'Random forests': compute_histogram(data_rf[:, 1], labels),
+             'SVM': compute_histogram(data_svm[:, 1], labels),
+             'Logistic regression': compute_histogram(data_logistic[:, 1], labels),
+             'PCA': compute_histogram(data_facanal[:, 1], labels), 'KNN': compute_histogram(data_knn[:, 1], labels)}
 # freq_data['Drop missing'] = compute_histogram(data_drop[:,1], labels)
-freq_data['Random replace'] = compute_histogram(data_replace[:,1], labels)
-freq_data['Summary'] = compute_histogram(data_mode[:,1], labels)
-freq_data['Random forests'] = compute_histogram(data_rf[:,1], labels)
-freq_data['SVM'] = compute_histogram(data_svm[:,1], labels)
-freq_data['Logistic regression'] = compute_histogram(data_logistic[:,1], labels)
-freq_data['PCA'] = compute_histogram(data_facanal[:,1], labels)
-freq_data['KNN'] = compute_histogram(data_knn[:,1], labels)
 
 # plot histograms given feature with missing data
 n_methods = len(freq_data.keys())
 bins = np.arange(len(labels))
 width = .25
-fig, ax = plt.subplots(figsize=(12,8))
+fig, ax = plt.subplots(figsize=(12, 8))
 
 for i in xrange(n_methods):
     key = sorted(freq_data.keys())[i]

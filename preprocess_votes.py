@@ -4,7 +4,7 @@ import numpy as np
 import os
 import random
 from scipy import delete
-from sklearn.cross_validation import train_test_split
+from sklearn.model_selection import train_test_split
 from missing_data_imputation import Imputer
 from processing import impute, perturb_data
 from params import votes_params
@@ -18,13 +18,14 @@ def set_trace():
     import sys
     Pdb(color_scheme='Linux').set_trace(sys._getframe().f_back)
 
+
 np.random.seed(rand_num_seed)
 random.seed(rand_num_seed)
 
 dataname = 'votes'
 
 # load features and labels
-votes = np.genfromtxt('data/house-votes-84.data', delimiter=',', dtype=object)
+votes = np.genfromtxt('data/house-votes-84.data', delimiter=',', dtype=str)
 
 # split data to (2/3) training and (1/3) test
 votes_train, votes_test = train_test_split(votes, test_size=0.33)
@@ -51,14 +52,14 @@ votes_test = delete(votes_test, 0, 1)
 np.savetxt('data/votes_train.csv', votes_train, delimiter=",", fmt="%s")
 
 # For training data
-print 'Preparing train data for {}'.format(dataname)
+print('Preparing train data for {}'.format(dataname))
 
 # enumerate parameters
 monotone = True
 ratios = np.arange(0, .5, .1)
 
 for ratio in ratios:
-    print '\nPerturbing {}% of data'.format(ratio)
+    print('\nPerturbing {}% of data'.format(ratio))
     if ratio > 0:
         pert_data, _ = perturb_data(
             votes_train, votes_params['cat_cols'], ratio, monotone,
@@ -70,11 +71,11 @@ for ratio in ratios:
                                                                     monotone,
                                                                     ratio))
     # save perturbed data to disk as csv
-    print '\tSaving perturbed data to {}'.format(path)
+    print('\tSaving perturbed data to {}'.format(path))
     np.savetxt(path, pert_data, delimiter=",", fmt="%s")
     # impute data given imp_methods in params.py
     for imp_method in votes_params['imp_methods']:
-        print '\tImputing with {}'.format(imp_method)
+        print('\tImputing with {}'.format(imp_method))
         imp = Imputer()
         data = impute(pert_data, imp, imp_method, votes_params)
         path = "data/imputed/{}_{}_mono_{}_ratio_{}.csv".format(dataname,
@@ -82,7 +83,7 @@ for ratio in ratios:
                                                                 monotone,
                                                                 ratio)
         # save data as csv
-        print '\tSaving imputed data to {}'.format(path)
+        print('\tSaving imputed data to {}'.format(path))
         np.savetxt(path, data, delimiter=",", fmt="%s")
 
         # binarize data
@@ -101,15 +102,15 @@ for ratio in ratios:
                                                                  monotone,
                                                                  ratio)
         path = os.path.join(feats_train_folder, filename)
-        print '\tSaving imputed scaled and binarized data to {}'.format(path)
+        print('\tSaving imputed scaled and binarized data to {}'.format(path))
         data_scaled_bin.dump(path)
 
 # For test data
-print 'Preparing test data for {}'.format(dataname)
+print('Preparing test data for {}'.format(dataname))
 # instantiate Imputer
 imp = Imputer()
 for imp_method in votes_params['imp_methods']:
-    print 'Imputing with {}'.format(imp_method)
+    print('Imputing with {}'.format(imp_method))
     data = impute(votes_test, imp, imp_method, votes_params)
     # scaling is not needed for votes data
 
@@ -126,7 +127,7 @@ for imp_method in votes_params['imp_methods']:
                         '{}_{}_bin_scaled_test.np'.format(dataname,
                                                           imp_method))
     data_bin = np.hstack((data_bin, labels_test))
-    print "\tSaving imputed data to {}".format(path)
+    print("\tSaving imputed data to {}".format(path))
     data_bin.dump(path)
     del data
     del data_bin

@@ -21,7 +21,7 @@ Examples:
 import os
 import argparse
 import numpy as np
-import lasagne
+# import lasagne
 import deepdish
 import pydot
 import neural_networks

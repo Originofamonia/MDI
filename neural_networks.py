@@ -66,7 +66,7 @@ def train(data, layers, updates_fn, batch_size=16, epoch_size=128,
 
         # Stop training if NaN is encountered
         if not np.isfinite(train_cost):
-            print 'Bad training er {} at iteration {}'.format(train_cost, n)
+            print('Bad training er {} at iteration {}'.format(train_cost, n))
             break
 
         if n and not (n % epoch_size):

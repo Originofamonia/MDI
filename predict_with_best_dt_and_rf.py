@@ -5,7 +5,7 @@ predictions using the datasets in the given include file"""
 
 import os
 import argparse
-import cPickle as pkl
+import _pickle as pkl
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import DecisionTreeClassifier
@@ -22,18 +22,18 @@ def dumpclean(obj):
     if type(obj) == dict:
         for k, v in obj.items():
             if hasattr(v, '__iter__'):
-                print k
+                print(k)
                 dumpclean(v)
             else:
-                print '%s : %s' % (k, v)
+                print('%s : %s' % (k, v))
     elif type(obj) == list:
         for v in obj:
             if hasattr(v, '__iter__'):
                 dumpclean(v)
             else:
-                print v
+                print(v)
     else:
-        print obj
+        print(obj)
 
 
 if __name__ == '__main__':
@@ -60,10 +60,10 @@ if __name__ == '__main__':
             dtc_parameters = dict(criterion=('gini', 'entropy'),
                                   splitter=('best', 'random'),
                                   max_features=('sqrt', 'log2', None),
-                                  max_depth=[2**i for i in xrange(1, 10)],
+                                  max_depth=[2**i for i in range(1, 10)],
                                   class_weight=['balanced']
                                   )
-            rfc_parameters = dict(n_estimators=[2**i for i in xrange(1, 10)],
+            rfc_parameters = dict(n_estimators=[2**i for i in range(1, 10)],
                                   criterion=('gini', 'entropy'),
                                   max_features=('sqrt', 'log2', None),
                                   class_weight=['balanced']

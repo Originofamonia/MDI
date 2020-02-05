@@ -144,40 +144,39 @@ def plot_confusion_matrix(y, y_predict, axes, axis, title='',
                                         verticalalignment='center')
 
 for ratio in ratios:
-    print 'Experiments on {}% missing data'.format(ratio)
-    pert_data, feat_imp_ids = perturbate_data(x, cat_cols, .01*ratio,
+    print('Experiments on {}% missing data'.format(ratio))
+    pert_data, feat_imp_ids = perturbate_data(x, cat_cols, .01 * ratio,
                                               missing_data_symbol,
                                               monotone=monotone)
 
     miss_data_cols = feat_imp_ids.keys()
-    print 'Missing data cols {}'.format(miss_data_cols)
+    print('Missing data cols {}'.format(miss_data_cols))
 
-    data_dict = {}
-    data_dict['RawData'] = pert_data
+    data_dict = {'RawData': pert_data}
 
     # drop observations with missing variables
-    print 'imputing with drop'
+    print('imputing with drop')
     data_dict['Drop'] = imp.drop(pert_data, miss_data_cond)
 
     # replace missing values with random existing values
-    print 'imputing with random replacement'
+    print('imputing with random replacement')
     data_dict['RandomReplace'] = imp.replace(pert_data, miss_data_cond)
 
     # replace missing values with feature summary
-    print 'imputing with feature summarization (mode)'
+    print('imputing with feature summarization (mode)')
     summ_func = lambda x: mode(x)[0]
     data_dict['Mode'] = imp.summarize(pert_data, summ_func, miss_data_cond)
 
     # replace missing data with predictions using random forest
-    print 'imputing with Random Forest'
+    print('imputing with Random Forest')
     data_dict['RandomForest'] = imp.predict(pert_data, cat_cols, miss_data_cond)
 
     # replace missing data with values obtained after factor analysis
-    print 'imputing with PCA'
+    print('imputing with PCA')
     data_dict['PCA'] = imp.factor_analysis(pert_data, cat_cols, miss_data_cond)
 
     # replace missing data with knn
-    print 'imputing with K-Nearest Neighbors'
+    print('imputing with K-Nearest Neighbors')
     data_dict['KNN'] = imp.knn(pert_data, n_neighbors, np.mean, miss_data_cond,
                                cat_cols)
 

@@ -3,11 +3,11 @@ import sys, time, os
 from ntpath import basename
 from os.path import splitext
 from itertools import product
-import cPickle as pickle
+# import cPickle as pickle
 import theano
 from theano import tensor as T
 import numpy as np
-from sklearn.cross_validation import KFold
+# from sklearn.cross_validation import KFold
 from params import feats_train_folder, feats_test_folder
 
 
@@ -42,7 +42,7 @@ def model(X, w_h, w_o):
 filepaths = np.loadtxt("include_data.csv", dtype=object, delimiter=",")
 for (include, train_filename, test_filename) in filepaths:
     if include == '1':
-        print '\nExecuting {}'.format(train_filename)
+        print('\nExecuting {}'.format(train_filename))
 
         # Load training and test sets
         set_trace()
@@ -76,7 +76,7 @@ for (include, train_filename, test_filename) in filepaths:
                                          np.zeros(params_matrix.shape[0]),
                                          np.zeros(params_matrix.shape[0])))
 
-        for param_idx in xrange(params_matrix.shape[0]):
+        for param_idx in range(params_matrix.shape[0]):
             alpha = params_matrix[param_idx, 0]
             gamma = params_matrix[param_idx, 1]
             batch_size = int(params_matrix[param_idx, 2])
@@ -111,7 +111,7 @@ for (include, train_filename, test_filename) in filepaths:
             model_str = 'alpha {} gamma {} batch size {}'.format(alpha,
                                                                 gamma,
                                                                 batch_size)
-            print model_str
+            print(model_str)
 
             error_rates = []
             test_costs = []
@@ -128,9 +128,9 @@ for (include, train_filename, test_filename) in filepaths:
 
                 error_rate = 1 - np.mean(np.argmax(y_train, axis=1) == predict(x_train))
                 if (i % (max_epoch / 4)) == 0 and verbose:
-                    print 'fold {}, epoch {}, error rate {}, cost {}'.format(fold, i+1,
+                    print('fold {}, epoch {}, error rate {}, cost {}'.format(fold, i+1,
                                                                 error_rate,
-                                                                test_cost)
+                                                                test_cost))
 
             error_rates.append(error_rate)
             test_costs.append(test_cost)
@@ -140,15 +140,15 @@ for (include, train_filename, test_filename) in filepaths:
             params_matrix[param_idx, 4] = np.mean(test_cost)
             params_matrix[param_idx, 5] = np.mean(running_time)
 
-            print 'alpha {} gamma {} batchsize {} error rate {} test cost {} running time {}'.format(params_matrix[param_idx,0],
+            print('alpha {} gamma {} batchsize {} error rate {} test cost {} running time {}'.format(params_matrix[param_idx,0],
                 params_matrix[param_idx,1],
                 params_matrix[param_idx,2],
                 params_matrix[param_idx,3],
                 params_matrix[param_idx,4],
-                params_matrix[param_idx,5])
+                params_matrix[param_idx,5]))
 
             error_rate_test = 1 - np.mean(np.argmax(y_test, axis=1) == predict(x_test))
-            print 'Test Error rate : {}'.format(error_rate_test)
+            print('Test Error rate : {}'.format(error_rate_test))
 
         # Save params matrix to disk
         params_matrix.dump('{}_results.np'.format(filename))

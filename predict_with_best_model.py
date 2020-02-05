@@ -5,7 +5,7 @@ predictions using the datasets in the given include file"""
 
 import os
 import argparse
-import cPickle as pkl
+import _pickle as pkl
 import numpy as np
 import theano
 from theano import tensor as T
@@ -28,18 +28,19 @@ def dumpclean(obj):
     if type(obj) == dict:
         for k, v in obj.items():
             if hasattr(v, '__iter__'):
-                print k
+                print(k)
                 dumpclean(v)
             else:
-                print '%s : %s' % (k, v)
+                print('%s : %s' % (k, v))
     elif type(obj) == list:
         for v in obj:
             if hasattr(v, '__iter__'):
                 dumpclean(v)
             else:
-                print v
+                print(v)
     else:
-        print obj
+        print(obj)
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -61,7 +62,7 @@ if __name__ == '__main__':
                 os.path.join(feats_test_folder, test_path)).astype(np.float32)
 
             network = neural_networks.build_general_network(
-                (nnet_params['batch_size'], data.shape[1]-1),  # last is target
+                (nnet_params['batch_size'], data.shape[1] - 1),  # last is target
                 nnet_params['n_layers'],
                 nnet_params['widths'],
                 nnet_params['non_linearities'],
@@ -69,9 +70,9 @@ if __name__ == '__main__':
 
             # load best network model so far
             parameters = deepdish.io.load(
-                os.path.join(MODEL_DIRECTORY, model_name+'.h5'))
+                os.path.join(MODEL_DIRECTORY, model_name + '.h5'))
 
-            for i in xrange(len(parameters)):
+            for i in range(len(parameters)):
                 parameters[i] = parameters[i].astype('float32')
 
             lasagne.layers.set_all_param_values(network, parameters)

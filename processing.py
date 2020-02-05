@@ -66,7 +66,6 @@ def perturb_data(x, cols, ratio, monotone, missing_data_symbol, mnar=None,
     """Perturbs data by substituting existing values with missing data symbol
     such that each feature has a minimum missing data ratio
 
-
     Parameters
     ----------
     x : np.ndarray
@@ -117,7 +116,7 @@ def perturb_data(x, cols, ratio, monotone, missing_data_symbol, mnar=None,
                                         (1-ratio, ratio)).astype(bool)
 
         miss_dict = defaultdict(list)
-        for i in xrange(len(cols)):
+        for i in range(len(cols)):
             rows = np.where(missing_mask[:, i])[0]
             data[rows, cols[i]] = missing_data_symbol
             miss_dict[cols[i]] = rows

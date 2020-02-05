@@ -96,7 +96,7 @@ verbose = True
 filepaths = np.loadtxt("include_data.csv", dtype=object, delimiter=",")
 for (include, train_filename, test_filename) in filepaths:
     if include == '1':
-        print '\nExecuting {}'.format(train_filename)
+        print('\nExecuting {}'.format(train_filename))
         # Load training and test sets
         x_train = np.load(os.path.join(feats_train_folder,
                                        train_filename)).astype(np.float32)
@@ -134,7 +134,7 @@ for (include, train_filename, test_filename) in filepaths:
                                       zerosX(params_mat.shape[0]),
                                       zerosX(params_mat.shape[0])))
 
-        for param_idx in xrange(params_mat.shape[0]):
+        for param_idx in range(params_mat.shape[0]):
             # load parameters for neural network model
             alpha = params_mat[param_idx, 0]
             gamma = params_mat[param_idx, 1]
@@ -153,7 +153,7 @@ for (include, train_filename, test_filename) in filepaths:
                          '\ndrops {}'.format(alpha, gamma, batch_size,
                                              n_hidden, depth, nonlins,
                                              drops))
-            print model_str
+            print(model_str)
 
             # specify input and target theano data types
             input_var = T.fmatrix('input')
