@@ -39,7 +39,7 @@ votes_params = {
     'cat_cols': np.arange(0, 16),  # labels are not included in imputation
     'non_cat_cols': (),
     'mnar_values': 'n',
-    'imp_methods': ('RandomReplace', 'Summary', 'RandomForest', 'LogisticRegression', 'SVD',  # no KNN
+    'imp_methods': ('RandomReplace', 'Summary', 'RandomForest', 'LogisticRegression', 'SVD',  # "KNN",
                     'SVM', 'Identity'),
     'summary_func': lambda x: mode(x)[0]
 }

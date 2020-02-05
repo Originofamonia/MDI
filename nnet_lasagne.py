@@ -5,11 +5,11 @@ import time
 import os
 from itertools import product
 import numpy as np
-from sklearn.cross_validation import KFold
+from sklearn.model_selection import KFold
 import theano
 from theano import tensor as T
 import lasagne
-from params import nnet_params_dict, feats_train_folder
+from params import nnet_params, feats_train_folder
 
 
 def set_trace():
@@ -93,13 +93,13 @@ def batch_ids(batch_size, x_train, train_idx):
 
 verbose = True
 # train on every perturbed dataset
-filepaths = np.loadtxt("include_data.csv", dtype=object, delimiter=",")
+filepaths = np.loadtxt("include_votes.csv", dtype=object, delimiter=",")
 for (include, train_filename, test_filename) in filepaths:
     if include == '1':
         print('\nExecuting {}'.format(train_filename))
         # Load training and test sets
         x_train = np.load(os.path.join(feats_train_folder,
-                                       train_filename)).astype(np.float32)
+                                       train_filename), allow_pickle=True).astype(np.float32)
 
         y_train = x_train[:, -1].astype(int)
         # y_train = (np.eye(2, dtype=np.float32)[x_train[:,-1].astype(int)])
@@ -113,16 +113,16 @@ for (include, train_filename, test_filename) in filepaths:
         n_outputs = len(np.unique(y_train))
 
         # Cross-validation and Neural Net parameters
-        n_folds = nnet_params_dict['n_folds']
-        alphas = nnet_params_dict['alphas']
-        gammas = nnet_params_dict['gammas']
-        decay_rate = nnet_params_dict['decay_rate']
-        batch_sizes = nnet_params_dict['batch_sizes']
-        max_epoch = nnet_params_dict['max_epoch']
-        depth = nnet_params_dict['depth']
-        widths = nnet_params_dict['widths']
-        nonlins = nnet_params_dict['nonlins']
-        drops = nnet_params_dict['drops']
+        n_folds = nnet_params['n_folds']
+        alphas = nnet_params['alphas']
+        gammas = nnet_params['gammas']
+        decay_rate = nnet_params['decay_rate']
+        batch_sizes = nnet_params['batch_size']
+        max_epoch = nnet_params['max_epoch']
+        depth = nnet_params['depth']
+        widths = nnet_params['widths']
+        nonlins = nnet_params['non_linearities']
+        drops = nnet_params['drops']
 
         # Dictionary to store results
         results_dict = {}

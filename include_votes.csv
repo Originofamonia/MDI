@@ -28,11 +28,11 @@
 1,votes_Identity_bin_scaled_mono_True_ratio_0.2.np,votes_Identity_bin_scaled_test.np
 1,votes_Identity_bin_scaled_mono_True_ratio_0.3.np,votes_Identity_bin_scaled_test.np
 1,votes_Identity_bin_scaled_mono_True_ratio_0.4.np,votes_Identity_bin_scaled_test.np
-1,votes_PCA_bin_scaled_mono_True_ratio_0.0.np,votes_PCA_bin_scaled_test.np
-1,votes_PCA_bin_scaled_mono_True_ratio_0.1.np,votes_PCA_bin_scaled_test.np
-1,votes_PCA_bin_scaled_mono_True_ratio_0.2.np,votes_PCA_bin_scaled_test.np
-1,votes_PCA_bin_scaled_mono_True_ratio_0.3.np,votes_PCA_bin_scaled_test.np
-1,votes_PCA_bin_scaled_mono_True_ratio_0.4.np,votes_PCA_bin_scaled_test.np
+9,votes_PCA_bin_scaled_mono_True_ratio_0.0.np,votes_PCA_bin_scaled_test.np
+9,votes_PCA_bin_scaled_mono_True_ratio_0.1.np,votes_PCA_bin_scaled_test.np
+9,votes_PCA_bin_scaled_mono_True_ratio_0.2.np,votes_PCA_bin_scaled_test.np
+9,votes_PCA_bin_scaled_mono_True_ratio_0.3.np,votes_PCA_bin_scaled_test.np
+9,votes_PCA_bin_scaled_mono_True_ratio_0.4.np,votes_PCA_bin_scaled_test.np
 
 
 

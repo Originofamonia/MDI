@@ -5,6 +5,7 @@ from scipy.stats import mode, itemfreq
 from scipy import delete
 from sklearn.metrics import confusion_matrix
 import matplotlib as mpl
+
 mpl.use('Agg')
 import matplotlib.pyplot as plt
 from missing_data_imputation import Imputer
@@ -31,6 +32,7 @@ ratios = np.arange(10, 100, 10)
 
 # monotone False must be fixed
 monotone = True
+
 
 def perturbate_data(x, cat_cols, ratio, missing_data_symbol,
                     monotone=False, in_place=False):
@@ -74,12 +76,14 @@ def perturbate_data(x, cat_cols, ratio, missing_data_symbol,
 
     return data, miss_dict
 
+
 def compute_histogram(data, labels):
     histogram = dict(itemfreq(data))
     for label in labels:
         if label not in histogram:
             histogram[label] = .0
     return histogram
+
 
 def compute_error_rate(y, y_hat, feat_imp_ids):
     error_rate = {}
@@ -89,6 +93,7 @@ def compute_error_rate(y, y_hat, feat_imp_ids):
 
     return error_rate
 
+
 # helper function to plot histograms
 def plot_histogram(freq_data, labels, axes, axis, width, title,
                    color_mapping):
@@ -96,22 +101,23 @@ def plot_histogram(freq_data, labels, axes, axis, width, title,
     labels = sorted(freq_data.values()[0].keys())
     bins = np.arange(len(labels))
 
-    for i in xrange(n_methods):
+    for i in range(n_methods):
         key = sorted(freq_data.keys())[i]
-        offset = i*2*width/float(n_methods)
+        offset = i * 2 * width / float(n_methods)
         values = [freq_data[key][label] for label in labels]
-        axes.flat[axis].bar(bins+offset, values,
-                               width, label=key,
-                               color=plt.cm.Set1(color_mapping[key]),
-                               align='center')
+        axes.flat[axis].bar(bins + offset, values,
+                            width, label=key,
+                            color=plt.cm.Set1(color_mapping[key]),
+                            align='center')
 
-    axes.flat[axis].set_xlim(bins[0]-0.5, bins[-1]+width+0.5)
+    axes.flat[axis].set_xlim(bins[0] - 0.5, bins[-1] + width + 0.5)
     axes.flat[axis].set_title(title)
     axes.flat[axis].set_xticks(bins + width)
     axes.flat[axis].set_xticklabels(labels, rotation=90,
-                                       fontsize='small')
+                                    fontsize='small')
     axes.flat[axis].legend(loc='best', prop={'size': 8},
-                              shadow=True, fancybox=True)
+                           shadow=True, fancybox=True)
+
 
 def plot_confusion_matrix(y, y_predict, axes, axis, title='',
                           normalize=True, add_text=False):
@@ -125,7 +131,7 @@ def plot_confusion_matrix(y, y_predict, axes, axis, title='',
 
     conf_mat = confusion_matrix(y, y_predict)
     if normalize:
-        conf_mat_norm = conf_mat / conf_mat.sum(axis=1).astype(float)[:,np.newaxis]
+        conf_mat_norm = conf_mat / conf_mat.sum(axis=1).astype(float)[:, np.newaxis]
         conf_mat_norm = np.nan_to_num(conf_mat_norm)
 
     axes.flat[axis].imshow(conf_mat_norm, cmap=plt.cm.Blues,
@@ -135,13 +141,14 @@ def plot_confusion_matrix(y, y_predict, axes, axis, title='',
 
     # add text to confusion matrix
     if add_text:
-        for x in xrange(conf_mat.shape[0]):
-            for y in xrange(conf_mat.shape[0]):
+        for x in range(conf_mat.shape[0]):
+            for y in range(conf_mat.shape[0]):
                 if conf_mat[x, y] > 0:
                     axes.flat[axis].annotate(str(conf_mat[x, y]),
-                                        xy=(y, x),
-                                        horizontalalignment='center',
-                                        verticalalignment='center')
+                                             xy=(y, x),
+                                             horizontalalignment='center',
+                                             verticalalignment='center')
+
 
 for ratio in ratios:
     print('Experiments on {}% missing data'.format(ratio))
@@ -185,9 +192,8 @@ for ratio in ratios:
                'PCA', 'KNN']
 
     color_mapping = {}
-    for i in xrange(len(methods)):
-        color_mapping[methods[i]] = (i+1) / float(len(methods))
-
+    for i in range(len(methods)):
+        color_mapping[methods[i]] = (i + 1) / float(len(methods))
 
     ###########################
     # plot confusion matrices #
@@ -203,7 +209,6 @@ for ratio in ratios:
 
     plt.savefig('images/mcar_mono_{}_conf_matrix_miss_ratio_{}.png'.format(monotone, ratio), dpi=300)
 
-
     #######################
     # compute error rates #
     #######################
@@ -213,13 +218,13 @@ for ratio in ratios:
                                                  feat_imp_ids)
 
     # set plot params
-    fig, axes = plt.subplots(1 + (len(miss_data_cols)/3), 3, figsize=(16, 9))
+    fig, axes = plt.subplots(1 + (len(miss_data_cols) / 3), 3, figsize=(16, 9))
     width = .25
 
     ###############################
     # compute and plot histograms #
     ###############################
-    for i in xrange(len(miss_data_cols)):
+    for i in range(len(miss_data_cols)):
         col = miss_data_cols[i]
         labels = np.unique(x[:, col])
         freq_data = {}
@@ -237,18 +242,18 @@ for ratio in ratios:
     bins = np.arange(len(feat_imp_ids))
     width = .25
 
-    for i in xrange(n_methods):
+    for i in range(n_methods):
         key = sorted(error_rates.keys())[i]
-        offset = i*width/float(n_methods)
+        offset = i * width / float(n_methods)
         values = [error_rates[key][feat] for feat in sorted(error_rates[key])]
-        axes.bar(bins+offset, values, width, label=key,
-                             color=plt.cm.Set1(color_mapping[key]),
-                             align='center')
-    axes.set_xlim(bins[0]-0.5, bins[-1]+width+0.5)
+        axes.bar(bins + offset, values, width, label=key,
+                 color=plt.cm.Set1(color_mapping[key]),
+                 align='center')
+    axes.set_xlim(bins[0] - 0.5, bins[-1] + width + 0.5)
     axes.set_xticks(bins + width)
     axes.set_xticklabels(sorted(feat_imp_ids.keys()))
     axes.legend(loc='best', prop={'size': 8},
-                            shadow=True, fancybox=True)
+                shadow=True, fancybox=True)
     axes.set_title('Error rates')
 
     plt.savefig('images/mcar_mono_{}_error_miss_ratio_{}.png'.format(monotone, ratio), dpi=300)

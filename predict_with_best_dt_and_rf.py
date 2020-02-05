@@ -50,12 +50,12 @@ if __name__ == '__main__':
         if include == '1':
             imputation_name = os.path.basename(train_path)[:-3]
             print("\nExecuting prediction on "
-                  "test set\n{}").format(imputation_name)
+                  "test set\n{}".format(imputation_name))
             # Load train and test set
             train_data = np.load(
-                os.path.join(feats_train_folder, train_path)).astype(np.float32)
+                os.path.join(feats_train_folder, train_path), allow_pickle=True).astype(np.float32)
             test_data = np.load(
-                os.path.join(feats_test_folder, test_path)).astype(np.float32)
+                os.path.join(feats_test_folder, test_path), allow_pickle=True).astype(np.float32)
             # define parameters for DT and RF classifiers
             dtc_parameters = dict(criterion=('gini', 'entropy'),
                                   splitter=('best', 'random'),
@@ -86,10 +86,10 @@ if __name__ == '__main__':
 
             model_preds['DT'+imputation_name] = dt_obj_val
             model_preds['RF'+imputation_name] = rf_obj_val
-            print("DT on {} error rate on test set: {}").format(
-                imputation_name, dt_obj_val)
-            print("RF on {} error rate on test set: {}").format(
-                imputation_name, rf_obj_val)
+            print("DT on {} error rate on test set: {}".format(
+                imputation_name, dt_obj_val))
+            print("RF on {} error rate on test set: {}".format(
+                imputation_name, rf_obj_val))
 
     # dump dictionary
     pkl.dump(model_preds, open(

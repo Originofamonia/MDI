@@ -47,12 +47,12 @@ if __name__ == '__main__':
         if include == '1':
             imputation_name = os.path.basename(train_path)[:-3]
             print("\nExecuting prediction on "
-                  "test set\n{}").format(imputation_name)
+                  "test set\n{}".format(imputation_name))
             # Load train and test set
             train_data = np.load(
-                os.path.join(feats_train_folder, train_path)).astype(np.float32)
+                os.path.join(feats_train_folder, train_path), allow_pickle=True).astype(np.float32)
             test_data = np.load(
-                os.path.join(feats_test_folder, test_path)).astype(np.float32)
+                os.path.join(feats_test_folder, test_path), allow_pickle=True).astype(np.float32)
 
             # Fit Tree Classifiers
             clfs = {
@@ -104,13 +104,12 @@ if __name__ == '__main__':
                            float(len(test_data)))
 
                 model_preds[model_name + imputation_name] = obj_val
-                print("{} on {} error rate on test set: {}").format(
-                    model_name, imputation_name, obj_val)
+                print("{} on {} error rate on test set: {}".format(
+                    model_name, imputation_name, obj_val))
 
     # dump dictionary
     pkl.dump(model_preds, open(
-        os.path.join(RESULTS_PATH, 'trees_{}_results.np'.format(dataname)),
-        'wb'))
+        os.path.join(RESULTS_PATH, 'trees_{}_results.np'.format(dataname)), 'wb'))
 
     # print dictionary
     dumpclean(model_preds)

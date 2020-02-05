@@ -3,12 +3,12 @@ import sys, time, os
 from ntpath import basename
 from os.path import splitext
 from itertools import product
-import cPickle as pickle
+import _pickle as pickle
 import theano
 from theano import tensor as T
 import numpy as np
-from sklearn.cross_validation import KFold
-from params import nnet_params_dict, feats_train_folder
+from sklearn.model_selection import KFold
+from params import nnet_params, feats_train_folder
 
 
 def set_trace():
@@ -61,11 +61,11 @@ for (include, train_filename, test_filename) in filepaths:
         n_outputs = len(np.unique(y_train))
 
         # Cross-validation and Neural Net parameters
-        n_folds = nnet_params_dict['n_folds']
-        alphas = nnet_params_dict['alphas']
-        gammas = nnet_params_dict['gammas']
-        batch_sizes = nnet_params_dict['batch_sizes']
-        max_epoch = nnet_params_dict['max_epoch']
+        n_folds = nnet_params['n_folds']
+        alphas = nnet_params['alphas']
+        gammas = nnet_params['gammas']
+        batch_sizes = nnet_params['batch_sizes']
+        max_epoch = nnet_params['max_epoch']
 
         # Dictionary to store results
         results_dict = {}

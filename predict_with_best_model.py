@@ -55,11 +55,11 @@ if __name__ == '__main__':
     for (include, train_path, test_path) in filepaths:
         if include == '1':
             model_name = os.path.basename(train_path)[:-3]
-            print("\nExecuting prediction on test set \n{}").format(model_name)
+            print("\nExecuting prediction on test set \n{}".format(model_name))
 
             # Load test set, separate target labels from dataset
             data = np.load(
-                os.path.join(feats_test_folder, test_path)).astype(np.float32)
+                os.path.join(feats_test_folder, test_path), allow_pickle=True).astype(np.float32)
 
             network = neural_networks.build_general_network(
                 (nnet_params['batch_size'], data.shape[1] - 1),  # last is target
