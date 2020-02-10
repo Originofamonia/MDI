@@ -22,7 +22,7 @@ np.random.seed(rand_num_seed)
 random.seed(rand_num_seed)
 
 # load features and labels
-x = np.genfromtxt('data/adult-test-raw', delimiter=', ', dtype=object)
+x = np.genfromtxt('data/adult-test-raw', delimiter=', ', dtype=str)
 
 # binarize labels
 labels = (np.array(x[:, -1]) == '>50K').astype(int)

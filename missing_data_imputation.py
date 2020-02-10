@@ -5,6 +5,7 @@ from sklearn.neighbors import NearestNeighbors
 from scipy.stats import mode
 from scipy.linalg import svd
 from collections import defaultdict
+from six import string_types
 
 
 class Imputer(object):
@@ -162,9 +163,9 @@ class Imputer(object):
         # binarize complete categorical variables and convert to int
         col = 0
         cat_ids_comp = []
-        while col < max(cat_cols):
-            if isinstance(data_complete[0, col], str) \
-                    and not data_complete[0, col].isdigit():
+
+        while col <= max(cat_cols):
+            if not data_complete[0, col].isdigit():
                 cat_ids_comp.append(col)
             col += 1
 

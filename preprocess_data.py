@@ -17,7 +17,7 @@ np.random.seed(rand_num_seed)
 random.seed(rand_num_seed)
 
 # load features and labels
-x = np.genfromtxt('data/adult-train-raw', delimiter=', ', dtype=object)
+x = np.genfromtxt('data/adult-train-raw', delimiter=', ', dtype=str)
 
 # remove holland from data to match feature size in test data
 x = x[x[:, -2] != 'Holand-Netherlands']

@@ -1,8 +1,8 @@
-1,PCA_bin_scaled_mono_True_ratio_0.0.np,PCA_ratio_0.0_bin_scaled_test.np
-1,PCA_bin_scaled_mono_True_ratio_0.1.np,PCA_ratio_0.1_bin_scaled_test.np
-1,PCA_bin_scaled_mono_True_ratio_0.2.np,PCA_ratio_0.2_bin_scaled_test.np
-1,PCA_bin_scaled_mono_True_ratio_0.3.np,PCA_ratio_0.3_bin_scaled_test.np
-1,PCA_bin_scaled_mono_True_ratio_0.4.np,PCA_ratio_0.4_bin_scaled_test.np
+9,PCA_bin_scaled_mono_True_ratio_0.0.np,PCA_ratio_0.0_bin_scaled_test.np
+9,PCA_bin_scaled_mono_True_ratio_0.1.np,PCA_ratio_0.1_bin_scaled_test.np
+9,PCA_bin_scaled_mono_True_ratio_0.2.np,PCA_ratio_0.2_bin_scaled_test.np
+9,PCA_bin_scaled_mono_True_ratio_0.3.np,PCA_ratio_0.3_bin_scaled_test.np
+9,PCA_bin_scaled_mono_True_ratio_0.4.np,PCA_ratio_0.4_bin_scaled_test.np
 1,RandomForest_bin_scaled_mono_True_ratio_0.0.np,RandomForest_ratio_0.0_bin_scaled_test.np
 1,RandomForest_bin_scaled_mono_True_ratio_0.1.np,RandomForest_ratio_0.1_bin_scaled_test.np
 1,RandomForest_bin_scaled_mono_True_ratio_0.2.np,RandomForest_ratio_0.2_bin_scaled_test.np
